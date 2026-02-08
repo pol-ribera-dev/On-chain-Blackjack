@@ -169,9 +169,11 @@ contract BlackJack{
     ///    Emits {LeaderboardUpdated} at the end of execution to broadcast the updated leaderboard.
 
     function updateLeaderboard() internal notBusted {
+
         uint8 score = scores[msg.sender];
         if (score <= leaderboard[2].score) return;   
-        Player memory newTop = Player(msg.sender, score);    
+        Player memory newTop = Player(msg.sender, score);   
+
         if (newTop.score >= leaderboard[0].score) {
             if (leaderboard[0].user != msg.sender) {
                 if (leaderboard[1].user != msg.sender) {
@@ -180,14 +182,17 @@ contract BlackJack{
                 leaderboard[1] = leaderboard[0];
             }
             leaderboard[0] = newTop;
+
         } else if (newTop.score >= leaderboard[1].score) {
             if (leaderboard[1].user != msg.sender) {
                 leaderboard[2] = leaderboard[1];
             }
             leaderboard[1] = newTop;
+
         } else {
             leaderboard[2] = newTop;
         }
+
         emit LeaderboardUpdated(leaderboard);
     } 
 
@@ -196,17 +201,19 @@ contract BlackJack{
     ///     it is replaced with an empty one, shifting all the other positions to the top of the leaderboard.  
 
     function deleteIfBusted() internal Busted {
+
         if (leaderboard[0].user == msg.sender) {
             leaderboard[0] = leaderboard[1];
             leaderboard[1] = leaderboard[2];
             delete leaderboard[2];
-        }
-        else if (leaderboard[1].user == msg.sender) {
+
+        } else if (leaderboard[1].user == msg.sender) {
             leaderboard[1] = leaderboard[2];
             delete leaderboard[2];
-        }
-        else if (leaderboard[2].user == msg.sender){
+
+        } else if (leaderboard[2].user == msg.sender){
             delete leaderboard[2];
         }
     }
 }
+
