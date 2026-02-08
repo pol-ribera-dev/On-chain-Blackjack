@@ -211,9 +211,10 @@ contract BlackJack{
             leaderboard[1] = leaderboard[2];
             delete leaderboard[2];
 
-        } else if (leaderboard[2].user == msg.sender){
+        } else if (leaderboard[2].user == msg.sender) {
             delete leaderboard[2];
         }
     }
 }
+
 
